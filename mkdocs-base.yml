@@ -1,0 +1,100 @@
+# mkdocs-base.yml
+# Shared base configuration for all Data-Wise documentation sites
+#
+# Usage in project mkdocs.yml:
+#   INHERIT: ./mkdocs-base.yml
+#   site_name: Your Project Name
+#   # ... project-specific settings
+
+theme:
+  name: material
+  palette:
+    # Dark mode (default)
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.instant        # Instant loading
+    - navigation.tracking       # Anchor tracking
+    - navigation.tabs           # Top-level tabs
+    - navigation.sections       # Expand sections
+    - navigation.top            # Back to top button
+    - search.suggest            # Search suggestions
+    - search.highlight          # Highlight search terms
+    - content.code.copy         # Copy code button
+    - content.tabs.link         # Link content tabs
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Data-Wise
+
+  # Cross-project navigation
+  # Override in project mkdocs.yml to add current project at top
+  projects:
+    - name: emacs-r-devkit
+      description: Professional Emacs environment for R package development
+      url: https://data-wise.github.io/emacs-r-devkit/
+      icon: material/language-r
+    - name: claude-r-dev
+      description: AI-powered R package development with Claude Code
+      url: https://data-wise.github.io/claude-r-dev/
+      icon: material/robot
+
+copyright: Copyright &copy; 2024-2025 Data-Wise
