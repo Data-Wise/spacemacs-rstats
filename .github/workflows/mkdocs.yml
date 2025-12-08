@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+      - dev
+    paths:
+      - 'docs_mkdocs/**'
+      - 'mkdocs.yml'
+  pull_request:
+    branches:
+      - main
     paths:
       - 'docs_mkdocs/**'
       - 'mkdocs.yml'
@@ -47,6 +54,8 @@ jobs:
           path: './site'
 
   deploy:
+    # Only deploy from main branch
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
