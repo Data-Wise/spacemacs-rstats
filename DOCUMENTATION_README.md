@@ -18,9 +18,10 @@ This directory contains the comprehensive documentation standards framework cove
 
 | Project Type | Standards Document | Config File | Example |
 |--------------|-------------------|-------------|---------|
-| **Tools/Frameworks** | [DOCUMENTATION_STANDARDS.md](DOCUMENTATION_STANDARDS.md) | [mkdocs-base.yml](mkdocs-base.yml) | emacs-r-devkit |
-| **R Packages (Generic)** | [R_PACKAGE_DOCS_STANDARDS.md](R_PACKAGE_DOCS_STANDARDS.md) | - | - |
-| **MediationVerse Packages** | [MEDIATIONVERSE_STANDARDS.md](MEDIATIONVERSE_STANDARDS.md) | See examples | mediationverse, medfit |
+| **Tools/Frameworks (MkDocs)** | [DOCUMENTATION_STANDARDS.md](DOCUMENTATION_STANDARDS.md) | [mkdocs-base.yml](mkdocs-base.yml) | claude-r-dev ⭐ |
+| **R Packages (all)** | [MEDIATIONVERSE_STANDARDS.md](MEDIATIONVERSE_STANDARDS.md) | See examples | mediationverse, medfit |
+
+**Simplified:** Only 2 standards documents (MkDocs for tools, pkgdown for R packages)
 
 ---
 
@@ -29,38 +30,22 @@ This directory contains the comprehensive documentation standards framework cove
 ### 1. Standards Documents
 
 #### [DOCUMENTATION_STANDARDS.md](DOCUMENTATION_STANDARDS.md)
-**For:** MkDocs-based documentation sites (tools, frameworks, configurations)
+**For:** MkDocs-based documentation sites (tools, frameworks)
 
 **Covers:**
-- Standard navigation structure (Home → Getting Started → Config → Troubleshooting → Contributing)
+- claude-r-dev navigation pattern ⭐ (specialized tutorials dropdown)
+- claude-r-dev content formatting ⭐ (Usage → What it does → When to use)
 - Material theme configuration
-- Page templates with required sections
+- Page templates (Homepage, Getting Started, Troubleshooting)
 - Cross-project navigation
-- Writing style guide
-- Badge standards
-- Feature grids and quick start tabs
+- Minimal, clean styling
 
 **Apply to:**
-- emacs-r-devkit ✅ (reference implementation)
-- claude-r-dev ⚠️ (needs update)
-- Other tool/framework projects
+- claude-r-dev ⭐ (reference implementation)
+- emacs-r-devkit
+- Future tool/framework projects
 
----
-
-#### [R_PACKAGE_DOCS_STANDARDS.md](R_PACKAGE_DOCS_STANDARDS.md)
-**For:** Generic R packages using pkgdown
-
-**Covers:**
-- Standard `_pkgdown.yml` configuration
-- Vignette structure ("Get Started" + advanced topics)
-- README structure for R packages
-- Roxygen2 documentation templates
-- Function reference organization with `@concept` tags
-- Color schemes by package type
-- GitHub Actions for deployment
-
-**Apply to:**
-- Generic R packages outside MediationVerse ecosystem
+**Focus:** Just 2 MkDocs projects - concise and practical
 
 ---
 
@@ -306,13 +291,14 @@ rpkgcommit "message"  # doc → test → style → commit
 ```
 /Users/dt/emacs-r-devkit/
 ├── DOCUMENTATION_README.md          # This file (overview)
-├── DOCUMENTATION_STANDARDS.md       # MkDocs standards
-├── R_PACKAGE_DOCS_STANDARDS.md     # Generic R package standards
-├── MEDIATIONVERSE_STANDARDS.md      # MediationVerse ecosystem standards
+├── DOCUMENTATION_STANDARDS.md       # MkDocs standards (2 projects)
+├── MEDIATIONVERSE_STANDARDS.md      # R package standards (6+ packages)
 ├── IMPLEMENTATION_PLAN.md           # Rollout plan
 ├── DOCUMENTATION_INVENTORY.md       # Repository inventory
 └── mkdocs-base.yml                  # Shared MkDocs config
 ```
+
+**Simplified:** Only 2 main standards files
 
 **Skill:**
 ```
