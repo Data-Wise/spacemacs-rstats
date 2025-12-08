@@ -1,0 +1,31 @@
+# Yasnippet skeleton for roxygen & S7
+# name: roxygen
+# key: roxy
+# --
+#' ${1:Title}
+#'
+#' ${2:Short description}
+#' 
+#' ${3:params: @param param1 description}
+#' @return ${4:Return description}
+#' @export
+${5:function_name} <- function(${6:args}) {
+  ${0}
+}
+
+# S7 class skeleton:
+# name: s7-class
+# key: s7class
+# --
+#' ${1:ClassName} class
+#'
+#' @format An S7 object
+#' @export
+${1} <- s7_class(
+  "${1}",
+  public = list(
+    initialize = function(...) {
+      # constructor
+    }
+  )
+)

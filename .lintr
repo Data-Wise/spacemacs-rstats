@@ -1,0 +1,4 @@
+# Example .lintr (place in your package root)
+linters: with_defaults(line_length_linter(120L))
+exclusions:
+  - tests/testthat/_snaps/*
