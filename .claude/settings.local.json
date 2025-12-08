@@ -31,7 +31,9 @@
       "Bash(git stash:*)",
       "Bash(/tmp/topics.json <<'EOF'\n{\n  \"names\": [\n    \"emacs\",\n    \"r\",\n    \"ess\",\n    \"r-package-development\",\n    \"emacs-configuration\",\n    \"flycheck\",\n    \"lsp-mode\",\n    \"roxygen2\",\n    \"styler\",\n    \"macos\",\n    \"developer-tools\",\n    \"statistics\",\n    \"data-science\"\n  ]\n}\nEOF)",
       "Bash(git reset:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(tree:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

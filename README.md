@@ -121,15 +121,15 @@ See the [complete keybinding reference](https://data-wise.github.io/emacs-r-devk
 
 ### Documentation
 
-- `TUTORIAL.md` - Complete user guide
-- `CHEAT-SHEET.md` - Quick keybinding reference
-- `TROUBLESHOOTING.md` - Problem solving guide
-- `TEST-CHECKLIST.md` - Verification checklist
+- `guides/TUTORIAL.md` - Complete user guide
+- `guides/CHEAT-SHEET.md` - Quick keybinding reference
+- `guides/TROUBLESHOOTING.md` - Problem solving guide
+- `tests/TEST-CHECKLIST.md` - Verification checklist
 
 ### Test Files
 
-- `test-features.R` - Interactive feature testing
-- `test-roxygen.R` - Roxygen generation testing
+- `tests/test-features.R` - Interactive feature testing
+- `tests/test-roxygen.R` - Roxygen generation testing
 
 ## 🌟 Workflow Integration
 
@@ -217,9 +217,9 @@ After installation, verify everything works:
 ./check-dependencies.sh
 
 # Open test file in Emacs
-emacs test-features.R
+emacs tests/test-features.R
 
-# Follow TEST-CHECKLIST.md for comprehensive testing
+# Follow tests/TEST-CHECKLIST.md for comprehensive testing
 ```
 
 ## 📖 Learning Resources
