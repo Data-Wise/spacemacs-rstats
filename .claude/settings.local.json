@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(emacs --version:*)",
+      "Bash(./install-init.sh)",
+      "Bash(ls:*)",
+      "Bash(emacs:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(Rscript:*)",
+      "Bash(echo:*)",
+      "Bash(~/.emacs.d/bin/export-gui-path.sh)",
+      "Bash(bash:*)",
+      "Bash(R --version:*)",
+      "Bash(chmod:*)",
+      "Bash(./check-dependencies.sh:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
