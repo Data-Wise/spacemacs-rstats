@@ -38,14 +38,29 @@ Between "Getting Started" and "Configuration", insert project-specific content:
   - Examples: examples.md
 ```
 
-**For Workflow/Framework Projects:**
+**For Workflow/Framework Projects (⭐ Recommended Pattern - claude-r-dev):**
 ```yaml
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
   - Commands Reference: commands-reference.md
   - Profiles: profiles.md
+  - Configuration: configuration.md
+  - Customization: customization.md
   - Tutorials:
       - Overview: tutorials/index.md
-      - [Specific tutorials...]
+      - R Package Development: tutorials/r-package-development.md
+      - Mediation Analysis: tutorials/mediation-analysis.md
+      - Causal Inference: tutorials/causal-inference.md
+      - Survival Analysis: tutorials/survival-analysis.md
+  - Contributing: contributing.md
 ```
+
+**Key Features of This Pattern:**
+- **Clear progression:** Getting Started → Core Features (Commands, Profiles) → Advanced (Customization)
+- **Specialized Tutorials dropdown:** Domain-specific learning paths (R Package Dev, Mediation, etc.)
+- **Descriptive names:** "Commands Reference" is clearer than just "Reference"
+- **Logical grouping:** Configuration separate from Customization (schema vs. user customization)
 
 **For Configuration Projects:**
 ```yaml
@@ -467,9 +482,88 @@ project-name/
 - **Voice**: Second person ("you" not "we")
 - **Tense**: Present tense for features, imperative for instructions
 
-### Formatting
+### Content Formatting Patterns (⭐ claude-r-dev style)
 
-**Admonitions:**
+**For Command/Function/Feature Documentation:**
+
+Use this consistent structure:
+
+```markdown
+### command_name
+
+**Usage:**
+```
+command_name [arguments]
+```
+
+**What it does:**
+- Step 1 of what happens
+- Step 2 of what happens
+- Step 3 of what happens
+
+**When to use:**
+Practical context explaining the use case and scenarios where this command is appropriate.
+
+**Example:**
+```language
+# Concrete example with inline comments
+command_name "descriptive argument"
+```
+```
+
+**Why this works:**
+- **Scannable:** Bold labels ("Usage:", "What it does:") help users quickly find information
+- **Practical:** "When to use" provides context beyond just syntax
+- **Consistent:** Same structure across all commands/functions
+- **Progressive:** Usage → Behavior → Context → Example
+
+---
+
+**For Getting Started pages:**
+
+```markdown
+## Section Name
+
+Brief introduction to this section.
+
+### Subsection (Option 1: Recommended)
+
+Step-by-step instructions:
+
+1. First step with command:
+   ```bash
+   command here
+   ```
+
+2. Second step with explanation
+
+3. Third step
+
+### Subsection (Option 2: Alternative)
+
+Alternative approach for different use cases.
+```
+
+---
+
+**Quick Reference Tables:**
+
+End reference pages with a summary table:
+
+```markdown
+## Quick Reference
+
+| Item | Description |
+|------|-------------|
+| command1 | Brief purpose |
+| command2 | Brief purpose |
+```
+
+---
+
+### Formatting Elements
+
+**Admonitions (use sparingly):**
 ```markdown
 !!! tip "Pro Tip"
     Helpful advice
@@ -484,6 +578,10 @@ project-name/
     What to avoid
 ```
 
+**Note:** claude-r-dev minimizes admonitions for cleaner appearance. Use only when truly necessary.
+
+---
+
 **Code Examples:**
 ```markdown
 === "Tab 1"
@@ -497,6 +595,22 @@ project-name/
 ```markdown
 Press ++ctrl+c++ to cancel
 Use ++option+x++ for Meta-x
+```
+
+**Inline Code with Context:**
+```markdown
+Use the `/project:init` command to initialize a new project.
+```
+
+**Code Blocks with Comments:**
+```markdown
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+```
 ```
 
 ## 🔄 Implementation Checklist
@@ -547,6 +661,47 @@ For each new documentation site:
 - Different page templates
 - Different badge styles
 
+## 🌟 Reference Implementations
+
+These projects exemplify the documentation standards:
+
+### emacs-r-devkit (Configuration Project)
+**URL:** https://data-wise.github.io/emacs-r-devkit/
+
+**Exemplifies:**
+- Complete standard navigation structure
+- All required pages (Getting Started, Configuration, Troubleshooting, Contributing)
+- Feature grid on homepage
+- Quick start tabs
+- Cross-project links
+- Standard Material theme with dark/light mode
+- Comprehensive keybindings and testing documentation
+
+**Best for reference when:** Creating documentation for configuration/setup projects
+
+---
+
+### claude-r-dev (Framework Project) ⭐
+**URL:** https://data-wise.github.io/claude-r-dev/
+
+**Exemplifies:**
+- Excellent top menu design with clear progression
+- Specialized tutorials dropdown (R Package Dev, Mediation, Causal Inference, Survival)
+- Descriptive navigation labels ("Commands Reference" vs generic "Reference")
+- Logical separation: Configuration (schema) vs Customization (user guide)
+- Domain-specific learning paths
+- Clean, professional organization
+
+**Best for reference when:** Creating documentation for frameworks, workflows, or tools with multiple use cases
+
+**Why this pattern works:**
+1. **User journey flow:** Getting Started → Core Features → Advanced Topics → Tutorials
+2. **Discoverability:** Specialized tutorials help users find domain-specific guidance
+3. **Clarity:** Descriptive menu items ("Commands Reference" is more informative than "API")
+4. **Scalability:** Tutorials dropdown can expand with new domains without cluttering main nav
+
+---
+
 ## 📊 Success Metrics
 
 Documentation is standardized when:
@@ -555,6 +710,8 @@ Documentation is standardized when:
 - [ ] Consistent visual brand
 - [ ] Similar pages have similar structure
 - [ ] Search works consistently across sites
+- [ ] New users can find getting started within 5 seconds
+- [ ] Tutorials/examples are discoverable via clear navigation
 
 ---
 
