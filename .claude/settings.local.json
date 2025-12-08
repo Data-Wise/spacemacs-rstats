@@ -19,7 +19,13 @@
       "Bash(git push:*)",
       "Bash(git commit:*)",
       "WebFetch(domain:data-wise.github.io)",
-      "Bash(git clone:*)"
+      "Bash(git clone:*)",
+      "Bash(git checkout:*)",
+      "Bash(gh:*)",
+      "Bash(unset GITHUB_TOKEN)",
+      "Bash(/tmp/branch-protection.json <<'EOF'\n{\n  \"required_status_checks\": {\n    \"strict\": true,\n    \"contexts\": []\n  },\n  \"enforce_admins\": true,\n  \"required_pull_request_reviews\": {\n    \"dismiss_stale_reviews\": true,\n    \"require_code_owner_reviews\": false,\n    \"required_approving_review_count\": 0\n  },\n  \"restrictions\": null,\n  \"allow_force_pushes\": false,\n  \"allow_deletions\": false\n}\nEOF)",
+      "Bash(GH_HOST=github.com gh auth switch:*)",
+      "Bash(unset GITHUB_TOKEN GH_TOKEN)"
     ],
     "deny": [],
     "ask": []
