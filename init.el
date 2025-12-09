@@ -614,3 +614,17 @@ If a region is selected, use it as the @examples section."
 
 (provide 'init)
 ;;; init.el ends here
+
+;;; ============================================================================
+;;; Obsidian Research Lab Integration
+;;; ============================================================================
+
+;; Load the Obsidian Bridge module if present
+(let ((obs-bridge-file (expand-file-name "snippets/obsidian-bridge.el" user-emacs-directory)))
+  (when (file-exists-p obs-bridge-file)
+    (load obs-bridge-file)
+    ;; Recommended Keybindings
+    (global-set-key (kbd "C-c o l") 'obs-r-link-project)
+    (global-set-key (kbd "C-c o f") 'obs-log-file)
+    (global-set-key (kbd "C-c o t") 'obs-fetch-theory)
+    (global-set-key (kbd "C-c o d") 'obs-sync-draft)))
