@@ -89,6 +89,7 @@ nav:
   - Configuration: configuration.md
   - Troubleshooting: troubleshooting.md
   - Testing: testing.md
+  - Obsidian Integration: obsidian-integration.md
 
 extra:
   social:
