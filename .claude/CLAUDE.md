@@ -6,6 +6,43 @@ This file provides context for Claude Code when working on the emacs-r-devkit pr
 
 ---
 
+## ⚡ Claude Code StatusLine
+
+**Status:** ✅ Configured and working
+**Location:** `~/.claude/statusline-p10k.sh`
+**Update Interval:** 300ms (built into Claude Code)
+
+### Configuration
+- **Global:** `~/.claude/settings.json` (all projects)
+- **Project:** `.claude/settings.local.json` (this project)
+- **Helper:** `add-statusline-to-project` (add to any project)
+
+### Display
+```
+╭─ ░▒▓ ⚙️ emacs-r-devkit  main ▓▒░
+╰─ Sonnet 4.5 │ 11:10 │ ⏱ 2m │ +156/-23 │ ⚡84% W:11%
+```
+
+**Features:**
+- Project type icons (📦 R, 📓 Quarto, ⚙️ Emacs, 🟢 Node, 🐍 Python, 🔌 MCP)
+- Git status (branch, dirty indicator, ahead/behind)
+- Session duration and current time
+- Lines changed (+green/-red) - removed cost display per user preference
+- Quota tracking (session & weekly with color coding)
+
+### Test Suite
+- **Location:** `~/.claude/tests/` (57 comprehensive tests)
+- **Quick test:** `~/.claude/tests/quick-test.sh`
+- **Visual test:** `~/.claude/tests/test-visual-statusline.sh`
+- **Diagnostic:** `~/.claude/tests/diagnose-statusline.sh`
+
+### Documentation
+- **Session summary:** `STATUSLINE-WORK-SUMMARY.md`
+- **Troubleshooting:** `~/.claude/tests/STATUSLINE-DISPLAY-GUIDE.md`
+- **Bypass mode fix:** `~/.claude/tests/BYPASS-MODE-FIX.md`
+
+---
+
 ## 🎯 Project Overview
 
 **Purpose:** Complete Emacs configuration optimized for R package development on macOS

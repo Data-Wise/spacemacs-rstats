@@ -215,3 +215,84 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
   - **jq gotcha:** Boolean false vs missing value
     - Wrong: `jq -r '.display.show_quota // true'` - treats `false` as falsy
     - Right: `jq -r '.display.show_quota | tostring'` - returns literal "true"/"false"
+
+### 2025-12-10: Claude Code StatusLine Implementation
+
+**Context:** Implementing custom statusLine with Powerlevel10k theme for Claude Code.
+
+**Key Learnings:**
+
+1. **Settings Precedence is Critical:**
+   - Project `.claude/settings.local.json` **completely overrides** global `~/.claude/settings.json`
+   - No inheritance - must explicitly include all desired settings
+   - StatusLine in global settings won't show if project has local settings without it
+
+2. **Update Interval is Optimal:**
+   - Claude Code updates statusLine every **300ms** (hardcoded)
+   - Only updates during conversation activity (not idle)
+   - Cannot be customized, but doesn't need to be - already optimal
+   - Perfect balance: responsive but not wasteful
+
+3. **StatusLine and Permissions Are Independent:**
+   - StatusLine execution is NOT subject to permission system
+   - It's a display feature, not a tool requiring approval
+   - Bypass permission mode doesn't affect statusLine
+   - Confusion arose because both were in same settings file
+
+4. **Test Suite Value:**
+   - 57 comprehensive tests caught configuration issues quickly
+   - Visual tests verify actual appearance (colors, icons, layout)
+   - Diagnostic script (13 checks) identifies problems in 5 seconds
+   - Quick test validates critical functionality instantly
+
+5. **Project Type Detection:**
+   - File-based detection works reliably:
+     - R package: `DESCRIPTION` with `Package:` field
+     - Quarto: `_quarto.yml` or `_quarto.yaml`
+     - Emacs: `init.el`
+     - Node: `package.json`
+     - Python: `pyproject.toml` or `setup.py`
+     - MCP: `mcp-server/` dir or "mcp" in path
+   - Icons provide instant visual feedback
+
+6. **User Preferences Matter:**
+   - Cost display (`💰$X.XX`) removed per user request
+   - Lines changed (`+4406/-267`) kept - shows code activity
+   - Configuration flexibility important for different users
+
+7. **Helper Scripts Reduce Friction:**
+   - `add-statusline-to-project` makes setup trivial
+   - Automatically handles new vs existing settings
+   - Checks for duplicates to avoid mistakes
+
+8. **Documentation is Essential:**
+   - Created 4 comprehensive guides (~10,000 words)
+   - Users need both quick-start AND deep troubleshooting
+   - Visual examples more helpful than text descriptions
+   - Separate docs for different audiences (users vs developers)
+
+**Implementation Stats:**
+- Development time: ~2 hours
+- Files created: 16 (tests + docs)
+- Lines of code/docs: ~4,200
+- Test coverage: ~95%
+- Tests passing: 57/57
+
+**Best Practices Established:**
+1. Always include statusLine in project settings if they exist
+2. Use helper script for consistency
+3. Test visually after changes
+4. Document color coding thresholds
+5. Provide both quick and comprehensive tests
+
+**Gotchas to Remember:**
+- Project settings **override**, not extend
+- StatusLine must be in **every** project with local settings
+- 300ms is perfect - don't try to "optimize" it
+- Window title requires OSC escape sequence
+- jq boolean handling: use `tostring`, not `// true` fallback
+
+**Files Created:**
+- Test suite: `~/.claude/tests/` (16 files)
+- Helper: `~/.claude/bin/add-statusline-to-project`
+- Docs: STATUSLINE-WORK-SUMMARY.md, BYPASS-MODE-FIX.md
