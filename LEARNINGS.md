@@ -296,3 +296,58 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
 - Test suite: `~/.claude/tests/` (16 files)
 - Helper: `~/.claude/bin/add-statusline-to-project`
 - Docs: STATUSLINE-WORK-SUMMARY.md, BYPASS-MODE-FIX.md
+
+### 2025-12-10: Auto-Refresh Quota Daemon
+
+**Context:** User wanted quota display to refresh automatically every 5 minutes without manual intervention.
+
+**Insight:**
+
+1. **Solution Architecture:**
+   - macOS `launchd` daemon (native scheduler) runs every 300 seconds
+   - Bash script reads quota config and checks thresholds
+   - Logs all activity with timestamps
+   - Shows macOS notifications on threshold breach
+
+2. **Key Implementation Details:**
+   - **Plist config:** ~/Library/LaunchAgents/com.user.claude-quota-refresh.plist
+   - **Main script:** ~/.claude/bin/quota-refresh.sh (reads config, no external API)
+   - **Control script:** ~/.claude/bin/quota-daemon-setup.sh (load/unload/status/logs)
+   - **Interval:** 300 seconds (5 minutes) - sufficient for quota monitoring
+
+3. **Important Limitation:**
+   - Daemon **reads** quota values from config file
+   - Still requires manual update: `cq update SESSION WEEKLY_ALL WEEKLY_SONNET`
+   - Claude has no API to programmatically fetch quota
+   - Daemon bridges the gap: once you update, it auto-displays every 5 min
+
+4. **Features Implemented:**
+   - ✅ Runs silently in background
+   - ✅ Auto-starts on system login
+   - ✅ Survives system restart
+   - ✅ Configurable alert thresholds (70% warn, 90% critical)
+   - ✅ Full logging with timestamps
+   - ✅ macOS notifications
+   - ✅ Easy control commands (load/unload/status/logs)
+
+5. **Workflow Integration:**
+   - Check Claude Desktop every few hours
+   - Run: `cq update X Y Z`
+   - Daemon automatically refreshes display in StatusLine
+   - No further action needed until next check
+
+6. **Files Created:**
+   - ~/.claude/bin/quota-refresh.sh - Main refresh logic
+   - ~/.claude/bin/quota-daemon-setup.sh - Control interface
+   - ~/Library/LaunchAgents/com.user.claude-quota-refresh.plist - System config
+   - ~/.claude/QUOTA-DAEMON-GUIDE.md - Full documentation
+   - ~/.claude/QUOTA-AUTO-REFRESH-SETUP.md - Setup notes
+
+7. **Gotchas:**
+   - launchd uses `.plist` XML format (strict syntax)
+   - KeepAlive + StartInterval = restarts on failure (good for reliability)
+   - Daemon can't directly update config (would need another layer)
+   - Logs should be cleaned up manually if they grow large
+
+**Status:** Active and running (loaded at 2025-12-10 11:23)
+**Test:** Script verified working, logs showing regular 5-minute checks
