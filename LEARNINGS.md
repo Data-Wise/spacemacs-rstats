@@ -473,3 +473,14 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
   - Uninstalled the corrupted extension: `gemini extensions uninstall google-workspace`.
   - Reinstall is the recommended fix (vs manual patching) to ensure file integrity.
 - **Key Takeaway:** Extension corruption can occur where metadata files are missing. Always check file structure (`ls -la`) before attempting manual repairs. Uninstall/reinstall is cleaner.
+
+### 2025-12-10: Spacemacs Migration & Emacs Compilation Issues
+
+**Context:** Migrating from vanilla Emacs to Spacemacs on macOS.
+**Insight:**
+
+- **Issue:** `emacs-plus@30` failed to compile/launch due to a dependency mismatch with `tree-sitter` (v0.26 vs v0.25).
+- **Resolution:** Switched to `emacs-mac` (RailwayCat) via Homebrew Cask. This provides a pre-built binary, avoiding local compilation errors.
+- **Key Config:** Updated `zshrc` to point `PATH`, `EDITOR`, and `VISUAL` to the `emacs-mac` location.
+- **Spacemacs:** Cloned `develop` branch to `~/.emacs.d`.
+- **Config:** Created a robust `.spacemacs` template enabling `ess`, `lsp`, `git`, and `projectile` layers.
