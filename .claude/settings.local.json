@@ -51,5 +51,9 @@
     ],
     "deny": [],
     "ask": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/bash /Users/dt/.claude/statusline-p10k.sh"
   }
 }
