@@ -148,6 +148,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
   - State tracking via `/tmp/claude-state-{session_id}`
 
 - **Configuration File:** `~/.claude/statusline-config.json`
+
   ```json
   {
     "notifications": {
@@ -159,6 +160,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
     }
   }
   ```
+
   Toggle any setting to `false` to disable that feature.
 
 ### 2025-12-09: Claude Quota Tracking System
@@ -203,6 +205,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
 - **SessionStart Hook:**
   - Shows quota automatically when Claude Code starts
   - Configured in `~/.claude/settings.json`:
+
     ```json
     "hooks": {
       "SessionStart": [{"type": "command", "command": "/Users/dt/.claude/bin/claude-quota"}]
@@ -272,6 +275,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
    - Separate docs for different audiences (users vs developers)
 
 **Implementation Stats:**
+
 - Development time: ~2 hours
 - Files created: 16 (tests + docs)
 - Lines of code/docs: ~4,200
@@ -279,6 +283,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
 - Tests passing: 57/57
 
 **Best Practices Established:**
+
 1. Always include statusLine in project settings if they exist
 2. Use helper script for consistency
 3. Test visually after changes
@@ -286,6 +291,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
 5. Provide both quick and comprehensive tests
 
 **Gotchas to Remember:**
+
 - Project settings **override**, not extend
 - StatusLine must be in **every** project with local settings
 - 300ms is perfect - don't try to "optimize" it
@@ -293,6 +299,7 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
 - jq boolean handling: use `tostring`, not `// true` fallback
 
 **Files Created:**
+
 - Test suite: `~/.claude/tests/` (16 files)
 - Helper: `~/.claude/bin/add-statusline-to-project`
 - Docs: STATUSLINE-WORK-SUMMARY.md, BYPASS-MODE-FIX.md
@@ -351,3 +358,104 @@ Use this file to capture knowledge that doesn't fit into formal documentation bu
 
 **Status:** Active and running (loaded at 2025-12-10 11:23)
 **Test:** Script verified working, logs showing regular 5-minute checks
+
+### 2025-12-10: Spacemacs Keybinding Analysis & Migration Planning
+
+**Context:** User requested investigation of Emacs keybindings, specifically looking for "space emacs" or SPC leader key configurations. Created comprehensive learning materials for potential Spacemacs migration.
+
+**Insight:**
+
+1. **Current Setup Analysis:**
+   - GNU Emacs 30.2 (Homebrew emacs-plus)
+   - emacs-plus has **no special keybindings** - identical to vanilla Emacs with macOS patches
+   - Current config uses non-standard modifier mapping: Command=Meta, Option=Super
+   - Total ~25 custom keybindings organized under `C-c r` (R development) and `C-c o` (Obsidian)
+
+2. **Critical Issue Discovered:**
+   - **Modifier key documentation mismatch** between `init.el` and documentation
+   - `init.el` configured: `Command` = `Meta`, `Option` = `Super`
+   - All documentation stated: `Option` = `Meta` (standard Emacs convention)
+   - This contradiction meant all keybinding instructions were incorrect
+
+3. **Spacemacs Research Findings:**
+   - Spacemacs uses **Space (SPC)** as leader key in Normal mode (Vim-style)
+   - Mnemonic organization: `SPC f` (files), `SPC b` (buffers), `SPC p` (projects)
+   - Built on Evil mode (Vim emulation) + extensive which-key integration
+   - Default modifier mapping: `Option` = `Meta`, `Command` = `Super`
+   - ESS layer provides R development support via `SPC m` prefix
+
+4. **Learning Materials Created:**
+   - **01-SPACEMACS-GUIDE.md** (~600 lines) - Philosophy, comparison, macOS integration
+   - **02-LEARNING-CURRICULUM.md** (~800 lines) - 28-day modular curriculum with daily lessons
+   - **03-CHEAT-SHEETS.md** (~400 lines) - Printable weekly reference cards
+   - **00-QUICK-START.md** (~250 lines) - Step-by-step installation guide
+   - Total: ~2,680 lines of comprehensive documentation
+
+5. **Curriculum Structure:**
+   - **Week 1:** Vim basics (modal editing, hjkl, editing commands)
+   - **Week 2:** Spacemacs navigation (SPC system, file/buffer/window mgmt)
+   - **Week 3:** R development workflow (ESS, custom functions, package dev)
+   - **Week 4:** Advanced features (macros, text objects, Magit)
+   - Each day: 15-30 minute lessons with R-focused examples
+   - Progressive difficulty with practice exercises and self-assessment
+
+6. **Migration Plan Revised:**
+   - **Recommended:** Switch to traditional modifier mapping (Option=Meta)
+   - **Rationale:** Aligns with Spacemacs defaults, community standards, all tutorials
+   - **Week 0:** Update modifiers, practice 2-3 days, backup config
+   - **Week 1-4:** Follow structured curriculum
+   - **Expected productivity:** 50% (Week 1-2) → 120%+ (Month 2+)
+
+7. **Custom Function Integration:**
+   - All emacs-r-devkit functions can be mapped to Spacemacs style
+   - Example mapping: `SPC m r r` → `insert-roxygen-skeleton`
+   - Shorter alternative: `,` as major-mode leader (`, r r` same as `SPC m r r`)
+   - Can create custom Spacemacs layer for emacs-r-devkit
+
+8. **Alternative Approach:**
+   - Gradual migration possible via Evil + General.el
+   - Adds Space leader and modal editing to existing config
+   - Less dramatic change than full Spacemacs
+   - Lighter weight but fewer community features
+
+**Documentation Created:**
+
+- `guides/keybinding-analysis/` (3 files):
+  - `KEYBINDING-SUMMARY.md` - Current keybinding reference
+  - `ENHANCEMENT-PLAN.md` - Spacemacs migration roadmap
+  - `README.md` - Directory overview
+- `guides/spacemacs-learning/` (5 files):
+  - `00-QUICK-START.md` - Installation quick-start
+  - `01-SPACEMACS-GUIDE.md` - Comprehensive introduction
+  - `02-LEARNING-CURRICULUM.md` - 28-day curriculum
+  - `03-CHEAT-SHEETS.md` - Printable references
+  - `README.md` - Directory overview
+
+**Key Decisions:**
+
+1. Recommend switching to Option=Meta (traditional Emacs)
+2. Focus on full Spacemacs migration (not gradual)
+3. 4-week structured learning approach
+4. R development workflow as primary use case
+
+**Expected Learning Timeline:**
+
+- Day 1-7: Frustrating (Vim basics)
+- Day 8-14: Clicking (SPC system)
+- Day 15-21: Breakthrough (R workflow restored)
+- Day 22-28: Mastery (faster than before)
+- Month 2+: Never going back
+
+**Gotchas to Remember:**
+
+- Week 1 is hardest - modal editing takes time
+- Update modifier keys BEFORE installing Spacemacs
+- Backup everything before migration
+- Print cheat sheets for desk reference
+- Practice daily (15-30 min) beats weekend marathons
+- Custom functions need explicit loading in ~/.spacemacs
+
+**Files Modified:**
+
+- Created 8 new documentation files (~2,680 lines)
+- No code changes to init.el yet (pending user decision)
