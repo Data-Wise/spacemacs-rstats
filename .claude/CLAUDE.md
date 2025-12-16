@@ -470,6 +470,23 @@ cd emacs-r-devkit
 
 ---
 
-**Last Updated:** 2025-12-07
-**Version:** 2.0 (Reorganized structure)
+## 🔌 MCP Integration Work (2025-12-10)
+
+### Current Status
+
+**Track B: Quick Capture** ✅ Complete
+- Implemented `quick_capture` tool in claude-statistical-research MCP
+- Features: Context detection, auto-tagging, auto-linking, <10s capture
+- Tests: 5/5 passing, production-ready
+- Location: `~/projects/dev-tools/claude-statistical-research/mcp-server/`
+
+**Planning Session Archives:**
+- Archived to: `archive/2025-12-10-mcp-session/`
+- Day 1 summary, session records, and comprehensive specs
+- MCP specifications live in: `~/projects/dev-tools/claude-statistical-research/`
+
+---
+
+**Last Updated:** 2025-12-15
+**Version:** 2.2 (Cleanup and archive MCP session docs)
 **Primary Contact:** Data-Wise GitHub Issues
