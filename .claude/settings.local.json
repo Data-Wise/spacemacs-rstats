@@ -96,7 +96,8 @@
       "Bash(gh issue list:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
