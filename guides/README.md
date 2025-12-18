@@ -38,19 +38,25 @@
 ## 🎯 Which Guide Should I Use?
 
 ### New to emacs-r-devkit?
+
 → Start with **[TUTORIAL.md](TUTORIAL.md)**
+
 - Complete setup instructions
 - First steps and verification
 - Feature overview
 
 ### Need a quick reminder?
+
 → Use **[CHEAT-SHEET.md](CHEAT-SHEET.md)**
+
 - Essential keybindings
 - Quick command reference
 - Printable format
 
 ### Having problems?
+
 → Check **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)**
+
 - Diagnostic procedures
 - Common error solutions
 - Where to get help
@@ -59,16 +65,20 @@
 
 ## 📖 Additional Resources
 
-**Online Documentation:** https://data-wise.github.io/emacs-r-devkit/
+**Online Documentation:** <https://data-wise.github.io/emacs-r-devkit/>
 
 **Specific Topics:**
+
 - [Getting Started](https://data-wise.github.io/emacs-r-devkit/getting-started/)
 - [Features](https://data-wise.github.io/emacs-r-devkit/features/)
 - [Keybindings](https://data-wise.github.io/emacs-r-devkit/keybindings/)
 - [Configuration](https://data-wise.github.io/emacs-r-devkit/configuration/)
 
 **Testing:**
+
+- [Testing Quick Reference](TESTING-QUICK-REF.md) - Test suite overview
 - See [tests/](../tests/) for verification procedures
+- [Edge Case Testing](https://data-wise.github.io/emacs-r-devkit/edge-case-testing/) - Online docs
 
 ---
 
@@ -77,6 +87,7 @@
 ### macOS Keybindings
 
 emacs-r-devkit is configured for macOS:
+
 - <kbd>⌃</kbd> = Control
 - <kbd>⌥</kbd> = Option (Meta in Emacs)
 - <kbd>⌘</kbd> = Command (Super in Emacs)
@@ -97,6 +108,7 @@ emacs-r-devkit is configured for macOS:
 ## 🤝 Contributing
 
 Found an issue or have suggestions?
+
 - Report bugs: [GitHub Issues](https://github.com/Data-Wise/emacs-r-devkit/issues)
 - Improve guides: [CONTRIBUTING.md](../CONTRIBUTING.md)
 
