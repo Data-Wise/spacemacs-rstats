@@ -2,6 +2,181 @@
 
 Verify your emacs-r-devkit installation is working correctly.
 
+## Automated Test Suite
+
+emacs-r-devkit includes a comprehensive 4-tier test suite with **59 tests** covering edge cases and error scenarios.
+
+### Running All Tests
+
+```bash
+cd tests
+./run_all_tests.sh
+```
+
+**Expected output:**
+
+```text
+╔════════════════════════════════════════════════════════╗
+║  emacs-r-devkit Test Suite                            ║
+╚════════════════════════════════════════════════════════╝
+
+═══ Test Suite A: Documentation ═══
+✅ Documentation tests PASSED (8/8)
+
+═══ Test Suite B: Emacs Lisp ═══
+✅ Emacs Lisp tests PASSED (25/25)
+
+═══ Test Suite C: R Packages ═══
+✅ R package tests PASSED (20/20)
+
+═══ Test Suite D: Integration ═══
+✅ Integration tests PASSED (6/6)
+
+╔════════════════════════════════════════════════════════╗
+║  ✅ ALL TESTS PASSED                                   ║
+╚════════════════════════════════════════════════════════╝
+```
+
+### Test Tiers
+
+#### Tier A: Documentation Tests (Python)
+
+**8 tests** validating documentation quality:
+
+- Link validation (internal/external)
+- Markdown syntax checking
+- Code block language specifiers
+- **Edge cases:** Unclosed code blocks, missing images, invalid YAML
+- MkDocs build verification
+- Cross-reference validation
+
+```bash
+cd tests
+python3 test_documentation.py
+```
+
+#### Tier B: Emacs Lisp Tests (ERT)
+
+**25 tests** verifying Emacs functionality:
+
+- Package loading (ESS, LSP, Flycheck, Company)
+- Custom function availability (roxygen, styler, S7 helpers)
+- Keybinding configuration
+- **Edge cases:** Error handling, buffer states, invalid input
+- Mode activation
+- Integration tests
+
+```bash
+cd tests
+./run_elisp_tests.sh
+```
+
+#### Tier C: R Package Tests (testthat)
+
+**20 tests** checking R tooling:
+
+- Required package availability
+- Styler functionality
+- Lintr code checking
+- Roxygen2 parsing
+- Language server availability
+- **Edge cases:** Empty files, syntax errors, nonexistent files
+- Helper script execution
+
+```bash
+cd tests
+Rscript -e "testthat::test_file('test_r_packages.R')"
+```
+
+#### Tier D: Integration Tests (Bash)
+
+**6 tests** validating end-to-end workflows:
+
+- Spacemacs configuration
+- Helper script availability
+- R installation
+- Required R packages
+- Emacs functionality
+- Documentation builds
+
+```bash
+cd tests
+./test_integration.sh
+```
+
+### Edge Case Coverage
+
+The test suite includes **16 edge case tests** with **9 test fixtures**:
+
+**Documentation Edge Cases:**
+
+- Malformed markdown (unclosed code blocks, broken tables)
+- Missing assets (images, files)
+- Invalid YAML frontmatter
+
+**Emacs Lisp Edge Cases:**
+
+- Functions called in wrong major mode
+- Buffers without associated files
+- Invalid user input to custom functions
+- Disabled feature states
+
+**R Package Edge Cases:**
+
+- Empty/comment-only R files
+- R syntax errors
+- Nonexistent files
+- Unicode characters
+
+**Test Fixtures Location:** `tests/fixtures/`
+
+### Individual Test Runners
+
+Run specific test tiers:
+
+```bash
+# Documentation only
+python3 tests/test_documentation.py
+
+# Emacs Lisp only
+tests/run_elisp_tests.sh
+
+# R packages only
+Rscript -e "testthat::test_file('tests/test_r_packages.R')"
+
+# Integration only
+tests/test_integration.sh
+```
+
+### Test Output
+
+All test results are logged to `tests/test_run.log`:
+
+```bash
+# View last test run
+cat tests/test_run.log
+
+# Monitor tests in real-time
+tail -f tests/test_run.log
+```
+
+### CI/CD Integration
+
+The test suite is designed for CI/CD pipelines:
+
+```yaml
+# Example GitHub Actions
+- name: Run Tests
+  run: |
+    cd tests
+    ./run_all_tests.sh
+```
+
+**Exit codes:**
+
+- `0` = All tests passed
+- `1` = One or more test suites failed
+
 ## Quick Verification
 
 ### Automated Check
@@ -9,11 +184,11 @@ Verify your emacs-r-devkit installation is working correctly.
 ```bash
 # Run dependency checker
 ./check-dependencies.sh
-```
+```text
 
 Expected output:
 
-```
+```text
 ================================================
   emacs-r-devkit Dependency Checker
 ================================================
@@ -34,7 +209,7 @@ Required R Packages:
   Summary
 ================================================
 ✓ All dependencies satisfied!
-```
+```bash
 
 ## Interactive Testing
 
@@ -44,7 +219,7 @@ Use the provided test file:
 
 ```bash
 emacs test-features.R
-```
+```text
 
 Follow instructions in the file to test:
 
@@ -355,7 +530,7 @@ Use `TEST-CHECKLIST.md` for comprehensive verification:
 
 ```bash
 emacs TEST-CHECKLIST.md
-```
+```text
 
 Check off each item as you verify it works.
 
@@ -368,7 +543,7 @@ Create a test package to verify all features:
 ```r
 # In R console
 usethis::create_package("~/emacs-test-pkg")
-```
+```text
 
 Then test:
 
@@ -386,7 +561,7 @@ Test features that work without package:
 
 ```bash
 emacs ~/test-standalone.R
-```
+```text
 
 1. ✅ Syntax highlighting
 2. ✅ Code completion (basic)
@@ -404,7 +579,7 @@ emacs ~/test-standalone.R
 ```bash
 # Measure startup
 time emacs --eval '(kill-emacs)'
-```
+```text
 
 ✅ **Expected:** < 5 seconds (after initial package installation)
 
@@ -416,7 +591,7 @@ writeLines(rep("x <- 1:10", 1000), "large.R")
 
 # Open in Emacs
 emacs large.R
-```
+```text
 
 ✅ **Expected:**
 - Loads quickly
@@ -429,20 +604,20 @@ emacs large.R
 
 ```bash
 M-x package-install RET ess RET
-```
+```bash
 
 ### If Flycheck Test Fails
 
 ```bash
 Rscript -e 'install.packages(c("lintr", "styler"))'
 M-x flycheck-verify-setup
-```
+```bash
 
 ### If LSP Test Fails
 
 ```r
 install.packages("languageserver")
-```
+```text
 
 Ensure you're in R package (has `DESCRIPTION`).
 
@@ -450,9 +625,9 @@ Ensure you're in R package (has `DESCRIPTION`).
 
 Check function exists:
 
-```
+```yaml
 M-: (fboundp 'emacs-r-devkit/insert-roxygen-skeleton) RET
-```
+```text
 
 Should return `t`.
 
@@ -461,7 +636,7 @@ Should return `t`.
 ```bash
 Rscript -e 'install.packages("styler")'
 Rscript ~/.emacs.d/bin/r-styler-check.R test.R
-```
+```bash
 
 ## Reporting Issues
 
