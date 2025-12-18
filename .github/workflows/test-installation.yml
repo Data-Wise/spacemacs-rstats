@@ -1,0 +1,118 @@
+name: Installation Tests
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  test-preflight:
+    name: Pre-Flight Check Tests
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3'
+      
+      - name: Run pre-flight tests
+        run: ./tests/test_preflight.sh
+      
+      - name: Run health check
+        run: ./scripts/health-check.sh || true
+  
+  test-fixtures:
+    name: Fixture-Based Tests
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create test fixtures
+        run: ./scripts/create-test-fixtures.sh
+      
+      - name: Run fixture tests
+        run: ./tests/test_with_fixtures.sh
+  
+  test-fresh-install:
+    name: Fresh Installation Test
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3'
+      
+      - name: Run fresh installation
+        run: ./scripts/install.sh --yes
+        continue-on-error: true
+      
+      - name: Verify installation
+        run: ./scripts/health-check.sh
+        continue-on-error: true
+      
+      - name: Check Spacemacs installed
+        run: |
+          if [ -d "$HOME/.emacs.d" ]; then
+            echo "✓ Spacemacs directory exists"
+          else
+            echo "✗ Spacemacs not installed"
+            exit 1
+          fi
+      
+      - name: Check configuration installed
+        run: |
+          if [ -f "$HOME/.spacemacs" ]; then
+            echo "✓ Configuration file exists"
+          else
+            echo "✗ Configuration not installed"
+            exit 1
+          fi
+  
+  test-all-suites:
+    name: All Test Suites
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3'
+      
+      - name: Install Python dependencies
+        run: |
+          pip install pytest
+      
+      - name: Install R dependencies
+        run: |
+          Rscript -e 'install.packages("testthat", repos="https://cloud.r-project.org")'
+      
+      - name: Run documentation tests
+        run: pytest tests/test_documentation.py -v
+        continue-on-error: true
+      
+      - name: Run R package tests
+        run: Rscript tests/test_r_packages.R
+        continue-on-error: true
+      
+      - name: Run integration tests
+        run: ./tests/test_integration.sh
+        continue-on-error: true

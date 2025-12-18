@@ -25,6 +25,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 FORCE_REINSTALL=false
 UPDATE_ONLY=false
 AUTO_YES=false
+SKIP_CHECKS=false
 
 # Parse arguments
 parse_args() {
@@ -40,6 +41,10 @@ parse_args() {
                 ;;
             --yes|-y)
                 AUTO_YES=true
+                shift
+                ;;
+            --skip-checks)
+                SKIP_CHECKS=true
                 shift
                 ;;
             -h|--help)
@@ -64,6 +69,7 @@ Usage: $0 [OPTIONS]
 Options:
     --force         Force full reinstall regardless of health status
     --update-only   Only update existing installation, don't reinstall
+    --skip-checks   Skip pre-flight checks (not recommended)
     --yes, -y       Skip confirmation prompts
     -h, --help      Show this help message
 
@@ -76,6 +82,8 @@ Description:
     - NEEDS_REPAIR (2): Offer repair or reinstall
     - NEEDS_UPDATE (1): Patch existing installation
     - HEALTHY (0): No action needed
+    
+    Pre-flight checks run automatically to ensure your system is ready.
 
 Examples:
     $0                    # Smart install (recommended)
@@ -406,6 +414,22 @@ main() {
     echo "║  ${BOLD}emacs-r-devkit Smart Installer${NC}                        ║"
     echo "╚════════════════════════════════════════════════════════╝"
     echo ""
+    
+    # Run pre-flight checks (unless skipped or force reinstall)
+    if [[ "$SKIP_CHECKS" != true && "$FORCE_REINSTALL" != true ]]; then
+        log_info "Running pre-flight checks..."
+        echo ""
+        
+        if ! "$SCRIPT_DIR/health-check.sh" --pre-flight; then
+            echo ""
+            log_error "Pre-flight checks failed"
+            echo ""
+            echo "Fix the issues above, then try again."
+            echo "Or run with ${BLUE}--skip-checks${NC} to bypass (not recommended)"
+            echo ""
+            exit 1
+        fi
+    fi
     
     # Force reinstall if requested
     if [[ "$FORCE_REINSTALL" == true ]]; then
