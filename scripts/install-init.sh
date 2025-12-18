@@ -11,10 +11,13 @@ if [ -f "$EMACS_D/init.el" ]; then
   cp -a "$EMACS_D/init.el" "$BACKUP_DIR/init.el.bak.$TIMESTAMP"
 fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [ -f "$SCRIPT_DIR/init.el" ]; then
-  install -m 644 "$SCRIPT_DIR/init.el" "$EMACS_D/init.el"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+INIT_SOURCE="$PROJECT_ROOT/config/init.el"
+
+if [ -f "$INIT_SOURCE" ]; then
+  install -m 644 "$INIT_SOURCE" "$EMACS_D/init.el"
 else
-  echo "ERROR: init.el not found in $SCRIPT_DIR. Place init.el alongside this script." >&2
+  echo "ERROR: init.el not found at $INIT_SOURCE" >&2
   exit 2
 fi
 for f in r-styler-check.R export-gui-path.sh; do

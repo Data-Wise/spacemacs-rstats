@@ -14,10 +14,11 @@
       '(company flycheck which-key exec-path-from-shell lsp-mode ess-r-mode))
 
 ;; Load the project config to get custom functions
-;; Note: Custom functions are currently in init.el
-(let ((init-file (expand-file-name "init.el" test-emacs-r-devkit--root)))
-  (when (file-exists-p init-file)
-    (load init-file t)))
+;; Load init.el from config directory
+(let ((init-file (expand-file-name "config/init.el" test-emacs-r-devkit--root)))
+  (if (file-exists-p init-file)
+      (load-file init-file)
+    (error "init.el not found at %s" init-file)))
 
 ;; Ensure essential variables are bound for tests
 (unless (boundp 'ess-r-backend) (setq ess-r-backend 'lsp))
