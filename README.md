@@ -236,7 +236,7 @@ After installation, verify everything works:
 
 ```bash
 # Run automated checks
-./check-dependencies.sh
+./scripts/check-dependencies.sh
 
 # Open test file in Emacs
 emacs tests/test-features.R
@@ -257,7 +257,7 @@ Having issues? Check:
 
 1. **[Troubleshooting Guide](https://data-wise.github.io/emacs-r-devkit/troubleshooting/)** - Common problems and solutions
 2. **[GitHub Issues](https://github.com/Data-Wise/emacs-r-devkit/issues)** - Known issues and discussions
-3. **Dependency Checker** - Run `./check-dependencies.sh`
+3. **Dependency Checker** - Run `./scripts/check-dependencies.sh`
 4. **Messages Buffer** - In Emacs: <kbd>⌃</kbd> <kbd>h</kbd> <kbd>e</kbd>
 
 ## 📄 License
