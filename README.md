@@ -1,5 +1,13 @@
 # emacs-r-devkit
 
+[![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)](tests/)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue)](https://data-wise.github.io/emacs-r-devkit/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)](https://www.apple.com/macos/)
+[![Emacs](https://img.shields.io/badge/Emacs-27.1+-purple)](https://www.gnu.org/software/emacs/)
+[![R](https://img.shields.io/badge/R-4.0+-blue)](https://www.r-project.org/)
+[![Spacemacs](https://img.shields.io/badge/Spacemacs-develop-blueviolet)](https://www.spacemacs.org/)
+
 **Professional Spacemacs environment for R package development on macOS**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -236,7 +244,7 @@ After installation, verify everything works:
 
 ```bash
 # Run automated checks
-./check-dependencies.sh
+./scripts/check-dependencies.sh
 
 # Open test file in Emacs
 emacs tests/test-features.R
@@ -257,7 +265,7 @@ Having issues? Check:
 
 1. **[Troubleshooting Guide](https://data-wise.github.io/emacs-r-devkit/troubleshooting/)** - Common problems and solutions
 2. **[GitHub Issues](https://github.com/Data-Wise/emacs-r-devkit/issues)** - Known issues and discussions
-3. **Dependency Checker** - Run `./check-dependencies.sh`
+3. **Dependency Checker** - Run `./scripts/check-dependencies.sh`
 4. **Messages Buffer** - In Emacs: <kbd>⌃</kbd> <kbd>h</kbd> <kbd>e</kbd>
 
 ## 📄 License
