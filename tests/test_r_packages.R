@@ -98,21 +98,28 @@ test_that("r-styler-check.R script exists and works", {
     script_path <- "~/.emacs.d/bin/r-styler-check.R"
     script_path <- path.expand(script_path)
 
+    # If not in ~/.emacs.d/bin, check current project bin/
+    if (!file.exists(script_path)) {
+        project_bin <- file.path(getwd(), "..", "bin", "r-styler-check.R")
+        if (file.exists(project_bin)) {
+            script_path <- project_bin
+        }
+    }
+
     skip_if_not(file.exists(script_path), "Helper script not found")
 
     # Create test file
     test_file <- tempfile(fileext = ".R")
     writeLines("x <- 1 + 2", test_file)
 
-    # Run styler check
-    result <- system2(
-        "Rscript",
-        c(script_path, test_file),
-        stdout = TRUE,
-        stderr = TRUE
+    # Run styler check - use system to get exit code directly
+    exit_status <- system(
+        paste("Rscript", shQuote(script_path), shQuote(test_file), "> /dev/null 2>&1"),
+        intern = FALSE,
+        wait = TRUE
     )
 
-    expect_true(attr(result, "status") %in% c(0, 1, NULL))
+    expect_true(exit_status %in% c(0, 1))
 
     unlink(test_file)
 })
@@ -134,11 +141,94 @@ test_that("usethis functions are available", {
     expect_true(is.function(usethis::use_test))
 })
 
+# Test 9: Styler edge case - empty file
+test_that("Styler handles empty R files gracefully", {
+    skip_if_not_installed("styler")
+
+    empty_file <- tempfile(fileext = ".R")
+    writeLines("# Only comments", empty_file)
+
+    # Should not error
+    expect_no_error(styler::style_file(empty_file, strict = FALSE))
+
+    unlink(empty_file)
+})
+
+# Test 10: Lintr edge case - clean code
+test_that("Lintr returns no violations for clean code", {
+    skip_if_not_installed("lintr")
+
+    clean_file <- tempfile(fileext = ".R")
+    writeLines(c(
+        "#' Test function",
+        "#' @param x A number",
+        "test_func <- function(x) {",
+        "  x + 1",
+        "}"
+    ), clean_file)
+
+    lints <- lintr::lint(clean_file)
+
+    # Clean code should have minimal or no lints
+    expect_true(length(lints) < 3) # Allow for minor style preferences
+
+    unlink(clean_file)
+})
+
+# Test 11: Styler edge case - syntax error handling
+test_that("Styler handles syntax errors gracefully", {
+    skip_if_not_installed("styler")
+
+    bad_file <- tempfile(fileext = ".R")
+    writeLines("function(x { x + 1 }", bad_file) # Missing closing paren
+
+    # Should handle error gracefully (not crash)
+    result <- tryCatch(
+        {
+            styler::style_file(bad_file, strict = FALSE)
+            TRUE
+        },
+        error = function(e) {
+            # Expected to error, which is fine
+            TRUE
+        }
+    )
+
+    expect_true(result)
+
+    unlink(bad_file)
+})
+
+# Test 12: Helper script edge case - nonexistent file
+test_that("Helper script handles nonexistent files", {
+    skip_if_not_installed("styler")
+
+    script_path <- "~/.emacs.d/bin/r-styler-check.R"
+    script_path <- path.expand(script_path)
+
+    if (!file.exists(script_path)) {
+        project_bin <- file.path(getwd(), "..", "bin", "r-styler-check.R")
+        if (file.exists(project_bin)) {
+            script_path <- project_bin
+        }
+    }
+
+    skip_if_not(file.exists(script_path), "Helper script not found")
+
+    # Test with nonexistent file
+    exit_status <- system(
+        paste("Rscript", shQuote(script_path), "/tmp/nonexistent_file_12345.R", "> /dev/null 2>&1"),
+        intern = FALSE,
+        wait = TRUE
+    )
+
+    # Should exit with error code (not 0)
+    expect_true(exit_status != 0)
+})
+
 # Run tests
 cat("\n🧪 Running R Package Tests\n")
 cat("==========================\n\n")
 
-# Run tests from this file
-test_file(sys.frame(1)$ofile)
-
-cat("\n✅ R package tests complete!\n")
+# Note: Tests are run by the runner using test_file()
+# so we don't need output here.

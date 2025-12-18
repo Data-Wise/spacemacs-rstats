@@ -37,6 +37,9 @@ class DocumentationTester:
             ("Link Validation", self.test_links),
             ("Markdown Syntax", self.test_markdown_syntax),
             ("Code Blocks", self.test_code_blocks),
+            ("Unclosed Code Blocks", self.test_unclosed_code_blocks),
+            ("Missing Images", self.test_missing_images),
+            ("YAML Frontmatter", self.test_yaml_frontmatter),
             ("MkDocs Build", self.test_mkdocs_build),
             ("Cross References", self.test_cross_references),
         ]
@@ -170,6 +173,90 @@ class DocumentationTester:
         except FileNotFoundError:
             self.errors.append("mkdocs not installed")
             return False
+    
+    def test_unclosed_code_blocks(self) -> bool:
+        """Test for unclosed code blocks"""
+        md_files = list(self.docs_dir.glob("**/*.md"))
+        
+        unclosed_blocks = []
+        
+        for md_file in md_files:
+            content = md_file.read_text()
+            # Count opening and closing code fences
+            opening = content.count('```')
+            
+            # Should be even (each opening has a closing)
+            if opening % 2 != 0:
+                unclosed_blocks.append(f"{md_file.name}: {opening} code fences (odd number)")
+        
+        if unclosed_blocks:
+            self.errors.extend([f"Unclosed code block: {item}" for item in unclosed_blocks])
+            return False
+        
+        return True
+    
+    def test_missing_images(self) -> bool:
+        """Test for missing image files"""
+        md_files = list(self.docs_dir.glob("**/*.md"))
+        
+        # Pattern for image references: ![alt](path)
+        image_pattern = re.compile(r'!\[([^\]]*)\]\(([^)]+)\)')
+        
+        missing_images = []
+        
+        for md_file in md_files:
+            content = md_file.read_text()
+            images = image_pattern.findall(content)
+            
+            for alt, img_path in images:
+                # Skip external URLs
+                if img_path.startswith(('http://', 'https://')):
+                    continue
+                
+                # Check if image file exists
+                if not img_path.startswith('file://'):
+                    target = (md_file.parent / img_path).resolve()
+                    if not target.exists():
+                        missing_images.append(f"{md_file.name}: {img_path}")
+        
+        if missing_images:
+            self.warnings.extend([f"Missing image: {item}" for item in missing_images])
+            # Warning only for now
+        
+        return True
+    
+    def test_yaml_frontmatter(self) -> bool:
+        """Test YAML frontmatter validity"""
+        md_files = list(self.docs_dir.glob("**/*.md"))
+        
+        invalid_yaml = []
+        
+        for md_file in md_files:
+            content = md_file.read_text()
+            
+            # Check if file starts with YAML frontmatter
+            if content.startswith('---'):
+                try:
+                    # Extract frontmatter
+                    parts = content.split('---', 2)
+                    if len(parts) >= 3:
+                        yaml_content = parts[1]
+                        
+                        # Basic YAML validation (check for common issues)
+                        lines = yaml_content.strip().split('\n')
+                        for line in lines:
+                            if line.strip() and not line.strip().startswith('#'):
+                                # Should have a colon for key-value pairs
+                                if ':' not in line and not line.startswith(' '):
+                                    invalid_yaml.append(f"{md_file.name}: Invalid YAML line: {line[:50]}")
+                except Exception as e:
+                    invalid_yaml.append(f"{md_file.name}: YAML parse error: {str(e)}")
+        
+        if invalid_yaml:
+            self.errors.extend([f"Invalid YAML: {item}" for item in invalid_yaml])
+            return False
+        
+        return True
     
     def test_cross_references(self) -> bool:
         """Test cross-references between documents"""
