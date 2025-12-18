@@ -40,7 +40,9 @@ REQUIRED_EMACS_PACKAGES=("ess" "lsp-mode" "company" "flycheck" "magit")
 ISSUES=()
 WARNINGS=()
 HEALTH_LEVEL=0  # Start optimistic
-OUTPUT_MODE="normal"  # normal, json, quiet, verbose
+OUTPUT_MODE="normal"  # normal, json, quiet, verbose, pre-flight
+AUTO_FIX=false
+FIXABLE_ISSUES=()
 
 # Parse arguments
 parse_args() {
@@ -56,6 +58,14 @@ parse_args() {
                 ;;
             --verbose)
                 OUTPUT_MODE="verbose"
+                shift
+                ;;
+            --pre-flight)
+                OUTPUT_MODE="pre-flight"
+                shift
+                ;;
+            --auto-fix)
+                AUTO_FIX=true
                 shift
                 ;;
             -h|--help)
@@ -78,10 +88,12 @@ Health Check for emacs-r-devkit
 Usage: $0 [OPTIONS]
 
 Options:
-    --json      Output results in JSON format
-    --quiet     Only return exit code (no output)
-    --verbose   Show detailed information
-    -h, --help  Show this help message
+    --json        Output results in JSON format
+    --quiet       Only return exit code (no output)
+    --verbose     Show detailed information
+    --pre-flight  Run pre-installation checks (stops on critical issues)
+    --auto-fix    Automatically fix safe issues (prompts for others)
+    -h, --help    Show this help message
 
 Exit Codes:
     0 = HEALTHY - Everything working perfectly
@@ -124,6 +136,310 @@ log_verbose() {
 version_ge() {
     # Returns 0 if $1 >= $2
     printf '%s\n%s\n' "$2" "$1" | sort -V -C
+}
+
+log_step() {
+    [[ "$OUTPUT_MODE" == "quiet" ]] && return
+    echo -e "\n${BOLD}▶ $1${NC}\n"
+}
+
+# Confirmation prompt with explanation
+confirm() {
+    if [[ "$AUTO_FIX" == true ]]; then
+        return 0  # Auto-approve if --auto-fix
+    fi
+    
+    local prompt="$1"
+    local explanation="${2:-}"
+    local response
+    
+    if [[ -n "$explanation" ]]; then
+        echo ""
+        echo -e "${BLUE}${INFO}${NC} ${explanation}"
+    fi
+    
+    read -p "$(echo -e "${YELLOW}?${NC} $prompt [y/N]: ")" response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# Check if already installed
+check_already_installed() {
+    if [[ "$OUTPUT_MODE" != "pre-flight" ]]; then
+        return 0  # Skip this check in normal mode
+    fi
+    
+    local is_installed=true
+    
+    # Check all components
+    if [[ ! -d "$HOME/.emacs.d" ]]; then
+        is_installed=false
+    elif [[ ! -f "$HOME/.spacemacs" ]]; then
+        is_installed=false
+    elif ! grep -q "emacs-r-devkit" "$HOME/.spacemacs" 2>/dev/null; then
+        is_installed=false
+    fi
+    
+    if [[ "$is_installed" == true ]]; then
+        echo ""
+        echo "╔════════════════════════════════════════════════════════╗"
+        echo "║  ${GREEN}✓${NC} emacs-r-devkit Already Installed                  ║"
+        echo "╚════════════════════════════════════════════════════════╝"
+        echo ""
+        log_success "emacs-r-devkit is already installed on this system"
+        echo ""
+        echo "What would you like to do?"
+        echo ""
+        echo "  ${BOLD}1)${NC} Check health status"
+        echo "     → Run: ${BLUE}./scripts/health-check.sh${NC}"
+        echo ""
+        echo "  ${BOLD}2)${NC} Update to latest version"
+        echo "     → Run: ${BLUE}./scripts/patch.sh${NC}"
+        echo "     → Updates config and scripts"
+        echo "     → Preserves your customizations"
+        echo ""
+        echo "  ${BOLD}3)${NC} Repair issues"
+        echo "     → Run: ${BLUE}./scripts/repair.sh${NC}"
+        echo "     → Fixes common problems"
+        echo ""
+        echo "  ${BOLD}4)${NC} Force reinstall"
+        echo "     → Run: ${BLUE}./scripts/install.sh --force${NC}"
+        echo "     → Complete fresh installation"
+        echo "     → Backup created automatically"
+        echo ""
+        exit 0
+    fi
+}
+
+# Install Homebrew with explanation
+install_homebrew() {
+    echo ""
+    echo "╔════════════════════════════════════════════════════════╗"
+    echo "║  Installing Homebrew                                   ║"
+    echo "╚════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "Homebrew is macOS's package manager."
+    echo "It's required to install Emacs and other dependencies."
+    echo ""
+    echo "This will:"
+    echo "  • Download and install Homebrew"
+    echo "  • Install Xcode Command Line Tools (if needed)"
+    echo "  • Add Homebrew to your PATH"
+    echo ""
+    echo "Time: ~5-10 minutes"
+    echo ""
+    
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # Add to PATH for current session
+    if [[ -d "/opt/homebrew/bin" ]]; then
+        export PATH="/opt/homebrew/bin:$PATH"
+    fi
+    
+    log_success "Homebrew installed"
+}
+
+# Install Emacs with explanation
+install_emacs() {
+    echo ""
+    echo "╔════════════════════════════════════════════════════════╗"
+    echo "║  Installing Emacs                                      ║"
+    echo "╚════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "Installing: ${BOLD}emacs-plus@30${NC} with native compilation"
+    echo ""
+    echo "This will:"
+    echo "  • Build Emacs 30 from source"
+    echo "  • Enable native compilation (2-3x faster)"
+    echo "  • Add macOS-specific enhancements"
+    echo "  • Create Emacs.app in /Applications"
+    echo ""
+    echo "Time: ~10-15 minutes"
+    echo "Disk space: ~500MB"
+    echo ""
+    
+    if confirm "Install emacs-plus@30?"; then
+        log_info "Installing emacs-plus@30..."
+        brew tap d12frosted/emacs-plus
+        brew install emacs-plus@30 --with-native-comp
+        
+        # Link to Applications
+        if [[ -d "/opt/homebrew/opt/emacs-plus@30/Emacs.app" ]]; then
+            ln -sf "/opt/homebrew/opt/emacs-plus@30/Emacs.app" "/Applications/Emacs.app"
+        elif [[ -d "/usr/local/opt/emacs-plus@30/Emacs.app" ]]; then
+            ln -sf "/usr/local/opt/emacs-plus@30/Emacs.app" "/Applications/Emacs.app"
+        fi
+        
+        log_success "Emacs installed"
+        return 0
+    else
+        log_error "Emacs installation declined"
+        return 1
+    fi
+}
+
+# Cleanup old Emacs with explanation
+cleanup_old_emacs() {
+    echo ""
+    echo "╔════════════════════════════════════════════════════════╗"
+    echo "║  Cleaning Up Old Emacs Installations                   ║"
+    echo "╚════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "Multiple Emacs installations detected."
+    echo ""
+    echo "This will:"
+    echo "  • Keep: emacs-plus@30 (recommended)"
+    echo "  • Remove: other Emacs versions"
+    echo "  • Prevent conflicts"
+    echo ""
+    
+    # List what will be removed
+    local to_remove=()
+    for formula in emacs emacs-plus@29 emacs-plus; do
+        if brew list "$formula" &>/dev/null 2>&1; then
+            to_remove+=("$formula")
+        fi
+    done
+    
+    if [[ ${#to_remove[@]} -gt 0 ]]; then
+        echo "Will remove:"
+        for formula in "${to_remove[@]}"; do
+            echo "  • $formula"
+        done
+        echo ""
+        
+        if confirm "Remove old Emacs versions?"; then
+            for formula in "${to_remove[@]}"; do
+                log_info "Uninstalling $formula..."
+                brew uninstall "$formula" 2>/dev/null || true
+            done
+            log_success "Cleaned up old Emacs installations"
+            return 0
+        fi
+    fi
+    
+    return 1
+}
+
+# Pre-flight check function
+run_preflight_checks() {
+    echo ""
+    echo "╔════════════════════════════════════════════════════════╗"
+    echo "║  ${BOLD}Pre-Flight Checks${NC}                                     ║"
+    echo "╚════════════════════════════════════════════════════════╝"
+    echo ""
+    
+    # Check if already installed
+    check_already_installed
+    
+    log_step "Checking System Requirements"
+    
+    # macOS version
+    local macos_version
+    macos_version=$(sw_vers -productVersion | cut -d. -f1)
+    if [[ $macos_version -lt 12 ]]; then
+        log_error "macOS 12.0+ required (found: $(sw_vers -productVersion))"
+        echo ""
+        echo "${RED}✗${NC} Cannot install on macOS $(sw_vers -productVersion)"
+        echo "  Please upgrade to macOS 12.0 or later"
+        echo ""
+        return 1
+    fi
+    log_success "macOS $(sw_vers -productVersion)"
+    
+    # Disk space
+    local free_space
+    free_space=$(df -g / | tail -1 | awk '{print $4}')
+    if [[ $free_space -lt 5 ]]; then
+        log_error "Insufficient disk space (${free_space}GB free, need 5GB+)"
+        echo ""
+        echo "${RED}✗${NC} Only ${free_space}GB available"
+        echo "  Please free up disk space before installing"
+        echo ""
+        return 1
+    fi
+    log_success "Disk space: ${free_space}GB available"
+    
+    # Network connectivity
+    log_info "Checking network connectivity..."
+    if ! curl -s --connect-timeout 5 https://github.com &>/dev/null; then
+        log_error "Cannot reach GitHub"
+        echo ""
+        echo "${RED}✗${NC} No internet connection"
+        echo "  Check your network and try again"
+        echo ""
+        return 1
+    fi
+    log_success "Network connectivity OK"
+    
+    log_step "Checking Dependencies"
+    
+    # Check/Install Homebrew
+    if ! command -v brew &>/dev/null; then
+        log_warning "Homebrew not found"
+        if install_homebrew; then
+            log_success "Homebrew installed"
+        else
+            log_error "Homebrew installation failed"
+            return 1
+        fi
+    else
+        log_success "Homebrew installed"
+    fi
+    
+    # Check/Install Emacs
+    if ! command -v emacs &>/dev/null; then
+        log_warning "Emacs not found"
+        if install_emacs; then
+            log_success "Emacs installed"
+        else
+            log_error "Emacs installation failed"
+            return 1
+        fi
+    else
+        # Check for multiple installations
+        local emacs_count
+        emacs_count=$(which -a emacs 2>/dev/null | wc -l | tr -d ' ')
+        
+        if [[ $emacs_count -gt 1 ]]; then
+            log_warning "Multiple Emacs installations detected"
+            cleanup_old_emacs || true
+        fi
+        
+        log_success "Emacs installed"
+    fi
+    
+    # Check R
+    if ! command -v R &>/dev/null; then
+        log_warning "R not found"
+        echo ""
+        echo "${YELLOW}⚠${NC} R is not installed"
+        echo ""
+        echo "Install R via Homebrew:"
+        echo "  ${BLUE}brew install r${NC}"
+        echo ""
+        if ! confirm "Continue without R?"; then
+            return 1
+        fi
+    else
+        log_success "R installed"
+    fi
+    
+    echo ""
+    echo "╔════════════════════════════════════════════════════════╗"
+    echo "║  ${GREEN}✓${NC} Pre-Flight Checks Passed                           ║"
+    echo "╚════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "${GREEN}✓${NC} System is ready for installation!"
+    echo ""
+    
+    return 0
 }
 
 # Check functions
@@ -426,6 +742,12 @@ EOF
 # Main execution
 main() {
     parse_args "$@"
+    
+    # Handle pre-flight mode
+    if [[ "$OUTPUT_MODE" == "pre-flight" ]]; then
+        run_preflight_checks
+        exit $?
+    fi
     
     [[ "$OUTPUT_MODE" != "quiet" ]] && echo "Running health check..."
     [[ "$OUTPUT_MODE" != "quiet" ]] && echo ""
