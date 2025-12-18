@@ -2,7 +2,7 @@ site_name: emacs-r-devkit
 site_description: Professional Emacs Environment for R Package Development on macOS
 site_author: Data-Wise
 site_url: https://data-wise.github.io/emacs-r-devkit/
-docs_dir: docs_mkdocs
+docs_dir: docs/mkdocs
 
 repo_name: Data-Wise/emacs-r-devkit
 repo_url: https://github.com/Data-Wise/emacs-r-devkit
