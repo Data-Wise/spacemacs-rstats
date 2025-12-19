@@ -53,7 +53,6 @@ This function should only modify configuration layer settings."
      version-control
      treemacs
      yaml
-     projectile ; For project management
      (ess :variables
           ess-r-backend 'lsp) ; For R development with LSP
     )
