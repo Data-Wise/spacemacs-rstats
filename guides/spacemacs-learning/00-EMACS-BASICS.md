@@ -1,4 +1,5 @@
 # Day 0: Emacs Basics (Before You Start!)
+
 ## Understanding Frames, Windows, Buffers, and Scratch
 
 **READ THIS FIRST** before starting the curriculum!
@@ -37,11 +38,15 @@ When you open Emacs, you see several things. Let's break it down:
 **Think of it as:** The picture frame around everything
 
 **Examples:**
-- When you click the Emacs icon, you open a **frame**
-- You can have multiple frames (like multiple windows of Chrome)
-- `⌘-N` creates a new frame (don't do this yet!)
+
+When you click the Emacs icon, you open a **frame**
+
+You can have multiple frames (like multiple windows of Chrome)
+
+`⌘-N` creates a new frame (don't do this yet!)
 
 **Real-world analogy:**
+
 ```
 Frame = Your house
 Windows = Rooms in your house
@@ -58,7 +63,8 @@ Buffers = Furniture in the rooms
 
 **Examples:**
 
-### Single Window (default):
+### Single Window (default)
+
 ```
 ┌─────────────────────┐
 │                     │
@@ -69,7 +75,8 @@ Buffers = Furniture in the rooms
 └─────────────────────┘
 ```
 
-### Split Vertically (side-by-side):
+### Split Vertically (side-by-side)
+
 ```
 ┌──────────┬──────────┐
 │          │          │
@@ -79,7 +86,8 @@ Buffers = Furniture in the rooms
 └──────────┴──────────┘
 ```
 
-### Split Horizontally (top/bottom):
+### Split Horizontally (top/bottom)
+
 ```
 ┌─────────────────────┐
 │   Window 1          │
@@ -115,6 +123,7 @@ Buffers = Furniture in the rooms
 - Switching buffers = showing different content in current window
 
 **Real-world analogy:**
+
 ```
 Buffer = A document
 Window = A desk where you read the document
@@ -142,12 +151,14 @@ all inside your room (frame).
 ```
 
 **Why it exists:**
+
 - Temporary scratchpad for notes
 - Test Emacs Lisp code
 - Paste temporary text
 - Quick calculations
 
 **Important:**
+
 - `*scratch*` is NOT saved automatically
 - It's meant for temporary stuff
 - Most people just ignore it and open real files
@@ -224,11 +235,13 @@ You can: Edit code (top left), write tests (top right), run R (bottom)
 ### "I closed my file but it's still open?"
 
 **What happened:**
+
 - You closed the **window** showing the buffer
 - The **buffer** (file content) is still in memory
 - It's just not visible anymore
 
 **How to see hidden buffers:**
+
 - Vanilla Emacs: `C-x C-b` (list buffers)
 - Spacemacs: `SPC b b` (switch buffer)
 
@@ -237,6 +250,7 @@ You can: Edit code (top left), write tests (top right), run R (bottom)
 ### "I have 10 tabs open?"
 
 **Correction:**
+
 - Emacs doesn't have "tabs" (by default)
 - You have **10 open buffers**
 - They're hidden until you display them in a window
@@ -246,6 +260,7 @@ You can: Edit code (top left), write tests (top right), run R (bottom)
 ### "How do I see all my open files?"
 
 **Answer:**
+
 - Your "open files" are **buffers**
 - List them: `SPC b b` (Spacemacs) or `C-x C-b` (vanilla)
 - Each file = 1 buffer
@@ -269,6 +284,7 @@ You see: 1 frame, 1 window, 1 buffer (*scratch*)
 ### Step 2: Open a file
 
 In Emacs:
+
 1. Press `SPC f f` (Spacemacs) or `C-x C-f` (vanilla)
 2. Type path to any R file
 3. Press Enter
@@ -312,14 +328,14 @@ Now you see: 1 frame, 2 windows, 2 different buffers!
 
 ## 📖 Terminology Reference Card
 
-| Term | What It Is | Real-World Analogy |
-|------|------------|-------------------|
-| **Frame** | The app window | Your house |
-| **Window** | A pane showing content | A room |
-| **Buffer** | The actual content/file | Furniture |
-| **Scratch** | Temporary notepad buffer | Sticky note pad |
-| **Mode Line** | Status bar below window | Room label |
-| **Minibuffer** | Command area at bottom | Your voice (for commands) |
+| Term                 | What It Is               | Real-World Analogy        |
+| -------------------- | ------------------------ | ------------------------- |
+| **Frame**      | The app window           | Your house                |
+| **Window**     | A pane showing content   | A room                    |
+| **Buffer**     | The actual content/file  | Furniture                 |
+| **Scratch**    | Temporary notepad buffer | Sticky note pad           |
+| **Mode Line**  | Status bar below window  | Room label                |
+| **Minibuffer** | Command area at bottom   | Your voice (for commands) |
 
 ---
 
@@ -327,10 +343,10 @@ Now you see: 1 frame, 2 windows, 2 different buffers!
 
 ### Frame Operations
 
-| Action | Vanilla | Spacemacs | Result |
-|--------|---------|-----------|--------|
-| New frame | `C-x 5 2` | Don't need | Opens new window |
-| Close frame | `C-x 5 0` | `SPC q q` | Closes window |
+| Action      | Vanilla     | Spacemacs   | Result           |
+| ----------- | ----------- | ----------- | ---------------- |
+| New frame   | `C-x 5 2` | Don't need  | Opens new window |
+| Close frame | `C-x 5 0` | `SPC q q` | Closes window    |
 
 **Note:** You rarely need multiple frames. Ignore these for now.
 
@@ -338,24 +354,24 @@ Now you see: 1 frame, 2 windows, 2 different buffers!
 
 ### Window Operations
 
-| Action | Vanilla | Spacemacs | Result |
-|--------|---------|-----------|--------|
-| Split vertical | `C-x 3` | `SPC w /` | Side-by-side |
-| Split horizontal | `C-x 2` | `SPC w -` | Top/bottom |
-| Close window | `C-x 0` | `SPC w d` | Removes pane |
-| Close others | `C-x 1` | `SPC w m` | Only current remains |
-| Switch window | `C-x o` | `SPC w w` | Move between panes |
+| Action           | Vanilla   | Spacemacs   | Result               |
+| ---------------- | --------- | ----------- | -------------------- |
+| Split vertical   | `C-x 3` | `SPC w /` | Side-by-side         |
+| Split horizontal | `C-x 2` | `SPC w -` | Top/bottom           |
+| Close window     | `C-x 0` | `SPC w d` | Removes pane         |
+| Close others     | `C-x 1` | `SPC w m` | Only current remains |
+| Switch window    | `C-x o` | `SPC w w` | Move between panes   |
 
 ---
 
 ### Buffer Operations
 
-| Action | Vanilla | Spacemacs | Result |
-|--------|---------|-----------|--------|
-| List buffers | `C-x C-b` | `SPC b b` | Shows all open |
-| Switch buffer | `C-x b` | `SPC b b` | Change current view |
-| Kill buffer | `C-x k` | `SPC b k` | Close file |
-| Scratch | `C-x b *scratch*` | `SPC b b` → *scratch* | Open notepad |
+| Action        | Vanilla             | Spacemacs                  | Result              |
+| ------------- | ------------------- | -------------------------- | ------------------- |
+| List buffers  | `C-x C-b`         | `SPC b b`                | Shows all open      |
+| Switch buffer | `C-x b`           | `SPC b b`                | Change current view |
+| Kill buffer   | `C-x k`           | `SPC b k`                | Close file          |
+| Scratch       | `C-x b *scratch*` | `SPC b b` → *scratch* | Open notepad        |
 
 ---
 
@@ -364,20 +380,21 @@ Now you see: 1 frame, 2 windows, 2 different buffers!
 Answer these before moving to Week 1:
 
 1. **You open Emacs and see *scratch*. What are you looking at?**
+
    <details><summary>Answer</summary>
    You're looking at:<br>
    - 1 Frame (the app window)<br>
    - 1 Window (the viewing pane)<br>
    - 1 Buffer (*scratch* - temporary notepad)
    </details>
-
 2. **You split the screen. How many frames do you have?**
+
    <details><summary>Answer</summary>
    Still 1 frame!<br>
    You created a new WINDOW, not a new frame.
    </details>
-
 3. **You open file.R, then test.R. How many buffers?**
+
    <details><summary>Answer</summary>
    At least 3 buffers:<br>
    - *scratch* (always exists)<br>
@@ -385,14 +402,14 @@ Answer these before moving to Week 1:
    - test.R<br>
    Plus hidden system buffers (*Messages*, etc.)
    </details>
-
 4. **Can a buffer exist without being visible?**
+
    <details><summary>Answer</summary>
    YES! Most buffers are hidden most of the time.<br>
    Only buffers shown in windows are visible.
    </details>
-
 5. **If you close all windows, what happens to buffers?**
+
    <details><summary>Answer</summary>
    Buffers still exist in memory!<br>
    You can switch to them again.<br>
@@ -401,9 +418,10 @@ Answer these before moving to Week 1:
 
 ---
 
-## 🚀 Now You're Ready!
+## 🚀 Now You're Ready
 
 **You understand:**
+
 - ✅ Frame = The app window
 - ✅ Window = A viewing pane (can have multiple)
 - ✅ Buffer = The actual content (files, consoles, etc.)
@@ -422,15 +440,13 @@ Answer these before moving to Week 1:
 ## 💡 Pro Tips
 
 1. **Scratch buffer is your friend** - use it for:
+
    - Quick calculations
    - Temporary clipboard
    - Testing code snippets
    - Scratchpad during calls
-
 2. **Don't fear hidden buffers** - they're not "lost," just not visible
-
 3. **Windows ≠ tabs** - stop thinking in tabs, think in panes
-
 4. **One frame is enough** - you almost never need multiple frames
 
 ---

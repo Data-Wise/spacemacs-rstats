@@ -183,4 +183,4 @@ View workflow: `.github/workflows/test-installation.yml`
 
 - [Installation Management](installation-management.md) - Installation system docs
 - [Troubleshooting](troubleshooting.md) - Common issues
-- [Contributing](../CONTRIBUTING.md) - Development guidelines
+- [Contributing](https://github.com/Data-Wise/spacemacs-rstats/blob/main/CONTRIBUTING.md) - Development guidelines

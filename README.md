@@ -52,30 +52,6 @@ A complete, integrated development environment for R package development powered
 ### Installation
 
 ```bash
-# Install Emacs
-brew tap d12frosted/emacs-plus
-brew install emacs-plus@30 --with-native-comp
-ln -s /opt/homebrew/opt/emacs-plus@30/Emacs.app /Applications/Emacs.app
-
-# Install Spacemacs
-git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-cd ~/.emacs.d && git checkout develop
-
-# Clone spacemacs-rstats
-git clone https://github.com/Data-Wise/spacemacs-rstats.git ~/spacemacs-rstats
-cd ~/spacemacs-rstats
-
-# Install configuration
-cp dotspacemacs.el ~/.spacemacs
-mkdir -p ~/.emacs.d/bin && cp bin/* ~/.emacs.d/bin/ && chmod +x ~/.emacs.d/bin/*
-
-# Install required R packages
-Rscript -e 'install.packages(c("devtools", "usethis", "roxygen2", "testthat", "lintr", "styler", "languageserver"))'
-
-# Verify installation
-### First Launch
-
-```bash
 ## ⚡ Installation (Copy-Paste This)
 
 ```bash
@@ -140,8 +116,10 @@ Shows 4 options: check health, update, repair, or reinstall.
 See [Installation Management](https://data-wise.github.io/spacemacs-rstats/installation-management/) for details.
 
 </details>
-etup guide
 
+## 📚 Documentation
+
+- [**Getting Started**](https://data-wise.github.io/spacemacs-rstats/getting-started/) - Complete setup guide
 - [**Migration Guide**](https://data-wise.github.io/spacemacs-rstats/migration-guide/) - Migrating from vanilla Emacs
 - [**Spacemacs Learning**](https://data-wise.github.io/spacemacs-rstats/spacemacs-learning/) - Complete learning curriculum
 - [**Features**](https://data-wise.github.io/spacemacs-rstats/features/) - Detailed feature documentation

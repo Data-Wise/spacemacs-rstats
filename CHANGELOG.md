@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Quick Reference Card**: New printable quick reference card (`guides/QUICK-REFERENCE.md`) with all essential keybindings.
+
+### Changed
+
+- **GEMINI.md**: Updated with current Spacemacs configuration details, correct directory structure, and Phase 5 improvements.
+- **README.md**: Fixed duplicate content, streamlined installation section, and corrected documentation links.
+- **Website**: Rebuilt MkDocs site with latest content.
+
+### Fixed
+
+- Removed duplicate documentation links in README.
+- Fixed broken installation instructions flow.
+- Corrected directory references (docs_mkdocs → docs/mkdocs).
+
+## [Previous Unreleased]
+
 - Standard coordination files: `ROADMAP.md`, `LEARNINGS.md`, `KNOWLEDGE_INDEX.md`.
 - New directory structure for documentation (`guides/`, `standards/`, `docs_mkdocs/`).
 - **Claude Code StatusLine**: Custom Powerlevel10k-inspired statusLine script (`~/.claude/statusline-p10k.sh`).

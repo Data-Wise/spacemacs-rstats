@@ -17,6 +17,23 @@ This guide will walk you through installing and setting up spacemacs-rstats with
 
 For R development, Spacemacs offers a superior experience with its ESS layer and LSP integration.
 
+## Preview
+
+![Spacemacs Home Screen](assets/screenshots/spacemacs-home.png)
+*Spacemacs welcome screen with recent files and projects*
+
+![R Development Workflow](assets/screenshots/r-workflow.png)
+*R development with split windows: code editor and R console*
+
+![Which-Key Discovery](assets/screenshots/which-key.png)
+*Which-key menu showing discoverable keybindings - press SPC and wait!*
+
+![Flycheck Error Checking](assets/screenshots/flycheck.png)
+*Real-time syntax checking with Flycheck and lintr*
+
+![Company Completion](assets/screenshots/completion.png)
+*Intelligent code completion with Company mode and LSP*
+
 ## Prerequisites
 
 ### System Requirements
@@ -36,7 +53,7 @@ brew install emacs-plus@30 --with-native-comp
 
 # Link to Applications
 ln -s /opt/homebrew/opt/emacs-plus@30/Emacs.app /Applications/Emacs.app
-```text
+```
 
 !!! tip "Why emacs-plus?"
     Native compilation significantly improves performance, especially for LSP and large R files.
@@ -49,7 +66,7 @@ brew install r
 
 # Verify installation
 R --version
-```bash
+```
 
 ## Installation
 
@@ -62,7 +79,7 @@ git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 # Use develop branch (recommended for latest features)
 cd ~/.emacs.d
 git checkout develop
-```bash
+```
 
 ### Step 2: Clone spacemacs-rstats
 
@@ -70,7 +87,7 @@ git checkout develop
 cd ~/
 git clone https://github.com/Data-Wise/spacemacs-rstats.git
 cd spacemacs-rstats
-```bash
+```
 
 ### Step 3: Backup Existing Configuration
 
@@ -84,7 +101,7 @@ mv ~/.spacemacs.d ~/.spacemacs.d.backup 2>/dev/null || true
 
 # Backup vanilla Emacs config (if migrating)
 mv ~/.emacs ~/.emacs.backup 2>/dev/null || true
-```bash
+```
 
 ### Step 4: Install Configuration
 
@@ -96,7 +113,7 @@ cp dotspacemacs.el ~/.spacemacs
 mkdir -p ~/.emacs.d/bin
 cp bin/* ~/.emacs.d/bin/
 chmod +x ~/.emacs.d/bin/*
-```text
+```
 
 The configuration includes:
 
@@ -128,14 +145,14 @@ install.packages(c(
   "pkgdown",         # Package websites
   "remotes"          # Remote package installation
 ))
-```bash
+```
 
 ### Step 5: Verify Dependencies
 
 ```bash
 # Run dependency checker
 ./scripts/check-dependencies.sh
-```text
+```
 
 Expected output:
 
@@ -163,7 +180,7 @@ Required R Packages:
   Summary
 ================================================
 ✓ All dependencies satisfied!
-```bash
+```
 
 ## First Launch
 
@@ -175,7 +192,7 @@ emacs
 
 # Or GUI
 open -a Emacs
-```text
+```
 
 !!! info "First Launch Patience"
     The first launch takes **10-15 minutes** as Spacemacs installs layers and downloads packages from MELPA. This is normal!
@@ -231,7 +248,7 @@ Once loaded, check that all layers are active:
 ```bash
 # Open the test file
 emacs test-features.R
-```text
+```
 
 Follow the instructions in `test-features.R` to test:
 
@@ -270,7 +287,7 @@ You should see:
 R version 4.4.2 (2024-10-31) -- "Pile of Leaves"
 ...
 >
-```bash
+```
 
 ### Send Code to R
 
@@ -311,7 +328,7 @@ If R is not found, you can manually export the PATH:
 ```bash
 # In terminal
 ~/.emacs.d/bin/export-gui-path.sh
-```text
+```
 
 Then restart Spacemacs.
 
